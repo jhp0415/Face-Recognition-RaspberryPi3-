@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/face.iml" filepath="$PROJECT_DIR$/.idea/face.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../raspi/.idea/raspi.iml" filepath="$PROJECT_DIR$/../raspi/.idea/raspi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tcpip/.idea/tcpip.iml" filepath="$PROJECT_DIR$/../tcpip/.idea/tcpip.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/untitled2/.idea/untitled2.iml" filepath="$USER_HOME$/PycharmProjects/untitled2/.idea/untitled2.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/untitled3/.idea/untitled3.iml" filepath="$USER_HOME$/PycharmProjects/untitled3/.idea/untitled3.iml" />
+    </modules>
+  </component>
+</project>
