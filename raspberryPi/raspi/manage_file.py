@@ -9,13 +9,15 @@ import time
 from datetime import datetime
 
 from raspi.frame import Frame
+from raspi.tcpip_client import TCPIPClient
 
 
 lock = Lock()
 
 class ManageFile(Thread, Frame):
-    def __init__(self):
+    def __init__(self, buffer):
         Thread.__init__(self)
+        self.client = buffer
         # 디렉토리 형성하기
         self.dir_name = Frame.dir_name
         self.upload_dir = Frame.PATH + "/" + self.dir_name      # 리눅스 용
@@ -40,6 +42,7 @@ class ManageFile(Thread, Frame):
         cv2.imwrite(file, Frame.copy)  # 이미지 저장
 
         print("manage_file : %s 파일을 저장했습니다." %(filename))
+        return True
 
 
 
@@ -55,32 +58,12 @@ class ManageFile(Thread, Frame):
             time.sleep(3)
             while(True):
                 lock.acquire()  # 락 설정
-                if(Frame.fcount < Frame.faceMax):
-                    # 프레임에서 얼굴을 찾았을 때
-
-                    if(Frame.faceFound):        # 3초 간격으로 프레임을 디렉토리에 저장한다. (적절한 시간은 3초)
-                        self.SavaFile()
-                        Frame.fcount += 1
-
-
-                elif ( Frame.fcount == Frame.faceMax) :
-                    # 저장된 프레임의 수가 100개라면, 서버로 모든 프레임을 전송한다.
-                    #lock.acquire()  # 락 설정
-                    Frame.faceFull = True
-                    #lock.release()  # 락 해제
-
-                    # 파일 전송
-
-                    while Frame.sendSuccess is False:      # 파일 전송이 완료될 때 까지 대기, 서버로 전송이 완료됐는지 확인되면
-                        continue
-
-                    Frame.fcount = 0
-                    Frame.faceFull = False
-                    # 서버로 전송을 완료하면, 디렉토리에 저장했던 모든 사진들을 제거한다.
-                    self.DeleteFile()
-
+                if(Frame.faceFound):        # 3초 간격으로 프레임을 디렉토리에 저장한다. (적절한 시간은 3초)
+                    if (self.SavaFile()):
+                        if (self.client.run()):
+                            self.DeleteFile()
                 lock.release()  # 락 해제
-                time.sleep(1)
+                time.sleep(2)
 
         except Exception as e:
             print("e: ", e)

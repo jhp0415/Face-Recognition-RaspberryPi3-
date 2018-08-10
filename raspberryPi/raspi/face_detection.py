@@ -64,10 +64,11 @@ class FaceDetection(Thread, Frame):
                 lock.acquire()      # 락 설정
 
                 if(self.IsFace(Frame.frame)):
-                    print("face_detection : 프레임에 얼굴을 표시합니다.")
+                    #print("face_detection : 프레임에 얼굴을 표시합니다.")
                     Frame.frame = self.FindFace(Frame.frame)
                 else:       # 얼굴이 없다
-                    print("face_detection : There is no Face")
+                    #print("face_detection : There is no Face")
+                    pass
 
                 lock.release()      # 락 해제
 

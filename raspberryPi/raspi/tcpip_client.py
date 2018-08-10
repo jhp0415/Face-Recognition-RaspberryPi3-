@@ -19,10 +19,8 @@ from tcpip.message_util import MessageUtil
 
 lock = Lock()
 
-class TCPIPClient(Thread):
+class TCPIPClient():
     def __init__(self):
-        Thread.__init__(self)
-
         self.serverIp = "ec2-13-124-248-96.ap-northeast-2.compute.amazonaws.com"  # 전송할 서버 IP주소
         self.serverPort = 9000  # AWS TCP Port 주소
         self.filepath = Frame.PATH + "\\" + Frame.dir_name  # 전송하고자 할 파일이 있는 디렉토리 경로
@@ -34,12 +32,13 @@ class TCPIPClient(Thread):
         self.sock.connect((self.serverIp, self.serverPort))  # 접속 요청을 수락한다.
 
 
-    def InitMessage(self, path):
 
-        print("InitMessage : 서버에 접속을 요청합니다.")
+    def InitMessage(self, path):
 
         self.msgId = 0
 
+
+        print("InitMessage : 서버에 접속을 요청합니다.")
         self.reqMsg = Message()
         self.filesize = os.path.getsize(path)
 
@@ -56,6 +55,7 @@ class TCPIPClient(Thread):
         self.reqMsg.Header.LASTMSG = tcpip.message.LASTMSG
         self.reqMsg.Header.SEQ = 0
 
+
     def RequestConnection(self):
         print("RequestConnection : 서버에 파일 전송을 요청합니다..")
         MessageUtil.send(self.sock, self.reqMsg)  # 클라이언트는 서버와 연결 되자마자 파일 전송 요청 메세지를 보낸다.
@@ -70,9 +70,7 @@ class TCPIPClient(Thread):
             print("서버에서 파일 전송을 거부했습니다.")
             exit(0)
 
-        if self.rspMsg.Body.RESPONSE == tcpip.message.SUCCESS:
-            print("서버에서 파일 전송을 승인했습니다.")
-            return True
+        return True
 
 
     def SendFile(self, buffer):
@@ -129,28 +127,23 @@ class TCPIPClient(Thread):
 
     def run(self):
         try:
-            while(True):
-                lock.acquire()  # 락 설정
-                if(Frame.faceFull):     # 디렉토리가 꽉 찼으면, 서버로 전송하기
-                    paths = os.listdir(self.filepath)
-                    for path in paths:      # 디렉토리 내의 모든 파일 리스트
-                        fpath = self.filepath + "\\" + path
-                        self.InitMessage(fpath)
-                        self.connetionFlag = self.RequestConnection()
-                        if (self.connetionFlag):
-                            self.SendFile(fpath)  # 파일 1개 전송
-                            self.connetionFlag = False
-                        '''
-                        while self.connetionFlag is False:  # 파일 전송이 완료될 때 까지 대기, 서버로 전송이 완료됐는지 확인되면
-                            self.connetionFlag = self.RequestConnection()
-                       '''
+            print("run : 서버 전송 함수 시작")
+            lock.acquire()  # 락 설정
 
-                    print("%s 내의 모든 파일을 전송 완료하였습니다." % (self.filepath))
-                    Frame.sendSuccess = True
+            paths = os.listdir(self.filepath)
+            for path in paths:      # 디렉토리 내의 모든 파일 리스트
+                fpath = self.filepath + "\\" + path
+                self.InitMessage(fpath)
+                self.connetionFlag = self.RequestConnection()
+                if (self.connetionFlag):
+                    self.SendFile(fpath)  # 파일 1개 전송
+                    self.connetionFlag = False
 
+            print("%s 내의 모든 파일을 전송 완료하였습니다." % (self.filepath))
+            print()
 
-                lock.release()      # 락 해제
-                time.sleep(1)
+            lock.release()      # 락 해제
+            return True
 
         except Exception as err:
             print("run : 파일을 전송하는 도중 예외가 발생했습니다.")
