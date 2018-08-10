@@ -1,14 +1,13 @@
 #-*- coding:utf-8 -*-
 import socket
 
-import message
-from message import Message
-from message_header import Header
-from message_body import BodyRequest
-from message_body import BodyResponse
-from message_body import BodyData
-from message_body import BodyResult
-
+import tcpip.message
+from tcpip.message import Message
+from tcpip.message_header import Header       #메시지 헤더. 파일의 길이, 속성 등의 정보
+from tcpip.message_body import BodyData       #메시지 몸통. 파일의 본문 내용
+from tcpip.message_body import BodyRequest    #전송 요청 메시지
+from tcpip.message_body import BodyResponse   #전송 응답 메시지
+from tcpip.message_body import BodyResult     #파일 전송 결과 메시지
 
 
 class MessageUtil:
@@ -55,13 +54,13 @@ class MessageUtil:
 
         body = None
 
-        if header.MSGTYPE == message.REQ_FILE_SEND:
+        if header.MSGTYPE == tcpip.message.REQ_FILE_SEND:
             body = BodyRequest(bBuffer)
-        elif header.MSGTYPE == message.REP_FILE_SEND:
+        elif header.MSGTYPE == tcpip.message.REP_FILE_SEND:
             body = BodyResponse(bBuffer)
-        elif header.MSGTYPE == message.FILE_SEND_DATA:
+        elif header.MSGTYPE == tcpip.message.FILE_SEND_DATA:
             body = BodyData(bBuffer)
-        elif header.MSGTYPE == message.FILE_SEND_RES:
+        elif header.MSGTYPE == tcpip.message.FILE_SEND_RES:
             body = BodyResult(bBuffer)
         else:
             raise Exception(

@@ -5,7 +5,7 @@ import cv2
 from threading import Thread, Lock
 import time
 
-from frame import Frame
+from raspi.frame import Frame
 
 lock = Lock()       # 공유 변수 제어하기
 
@@ -16,7 +16,7 @@ class FaceDetection(Thread, Frame):
         # Import the face detection haar file, 오픈시비 얼굴인식 사용
         # haarcascade_ㅇㅇㅇ.xml 파일의 경로를 적절히 바꿔줘야 한다.
 
-
+        '''
         # 라즈베리파이에서의 경로
         self.face_cascade = cv2.CascadeClassifier("/home/pi/opencv/opencv-3.4.0/data/haarcascades/haarcascade_frontalface_alt.xml")
         self.eye_cascade = cv2.CascadeClassifier("/home/pi/opencv/opencv-3.4.0/data/haarcascades/haarcascade_eye.xml")
@@ -26,7 +26,7 @@ class FaceDetection(Thread, Frame):
         self.face_cascade = cv2.CascadeClassifier(
             "C:/opencv/build/etc/haarcascades/haarcascade_frontalface_alt.xml")
         self.eye_cascade = cv2.CascadeClassifier("C:/opencv/build/etc/haarcascades/haarcascade_eye.xml")
-        '''
+
 
         print("face_detection __init__")
 

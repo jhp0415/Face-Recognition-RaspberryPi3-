@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-
+'''
 from pi_camera.array import PiRGBArray
 from pi_camera import PiCamera
 
@@ -8,7 +8,7 @@ from threading import Thread, Lock
 import time
 import copy
 
-from frame import Frame
+from raspi.frame import Frame
 
 lock = Lock()
 
@@ -69,7 +69,7 @@ class VideoCamera(Thread, Frame):
         except Exception as err:
             print(err)
 
-
+'''
 
 
 

@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from message import ISerializable
+from tcpip.message import ISerializable
 import struct
 
 '''

@@ -1,6 +1,8 @@
 #-*- coding:utf-8 -*-
-from message import ISerializable
-import message
+
+import tcpip.message
+from tcpip.message import ISerializable
+
 import struct
 
 
@@ -76,7 +78,7 @@ class BodyResponse(ISerializable):
             self.RESPONSE = unpacked[1]     # 요청 수락
         else:
             self.MSGID = 0
-            self.RESPONSE = message.DENIED      # 파일 전송 거절
+            self.RESPONSE = tcpip.message.DENIED      # 파일 전송 거절
 
     def GetBytes(self):
         return struct.pack(
@@ -126,7 +128,7 @@ class BodyResult(ISerializable):
 
         else:       # 파일 전송 실패
             self.MSGID = 0
-            self.RESULT = message.FAIL
+            self.RESULT = tcpip.message.FAIL
 
 
     def GetBytes(self):
