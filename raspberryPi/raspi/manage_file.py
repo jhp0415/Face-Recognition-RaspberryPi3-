@@ -35,7 +35,7 @@ class ManageFile(Thread, Frame):
 
 
     def SavaFile(self):
-        filename = self.GetDatatime() + "_" + str(Frame.fcount) + ".jpg"  # 저장할 파일 이름 정하기. 현재 시간 + count index
+        filename = self.GetDatatime() + ".jpg"  # 저장할 파일 이름 정하기. 현재 시간 + count index
         #file = self.upload_dir + "\\" + filename  # 경로 + 파일 이름 + 확장자 (윈도우 버전)
         file = self.upload_dir + "/" + filename  # 경로 + 파일 이름 + 확장자 (리눅스 버전)
 
@@ -59,12 +59,20 @@ class ManageFile(Thread, Frame):
             while(True):
                 lock.acquire()  # 락 설정
                 if(Frame.faceFound):        # 3초 간격으로 프레임을 디렉토리에 저장한다. (적절한 시간은 3초)
-                    if (self.SavaFile()):
-                        if (self.client.run()):
-                            self.DeleteFile()
+                    self.SavaFile()
+                    Frame.fcount += 1
+                    if (Frame.fcount == Frame.faceMax):
+                        Frame.faceFull = True
+                        #lock.release()  # 락 잠시 해제
+                        while Frame.sendSuccess is not True:        # True가 될때까지 무한루프
+                            #print("manage_file 대기 중...")
+                            pass
+
+                        Frame.sendSuccess = False       # 초기화
+                        Frame.fcount = 0
                 lock.release()  # 락 해제
                 time.sleep(2)
 
         except Exception as e:
-            print("e: ", e)
+            print("manage_file e : ", e)
 

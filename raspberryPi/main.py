@@ -37,12 +37,12 @@ if __name__ == '__main__':
         time.sleep(2)
         ob_face.start()
         ob_file.start()
-        #ob_client.start()
+        ob_client.start()
 
         ob_camera.join()       # 스레드가 종료될 때 까지 메인 스레드가 대기하게 한다.
         ob_face.join()
         ob_file.join()
-        #ob_client.join()
+        ob_client.join()
 
     except Exception as err:
         print(err)
