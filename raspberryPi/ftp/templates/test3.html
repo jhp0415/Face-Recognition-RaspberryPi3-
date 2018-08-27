@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD Xhtml 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <title>이미지자동변경</title>
+ <style>
+  body{
+   font-size:9pt;
+  }
+  div{
+   margin:20px;
+   margin-bottom:20px;
+  }
+  div div{
+   font-size:20px;
+  }
+ </style>
+
+ <script  type="text/javascript" src="../libs/jquery-1.7.1.min.js"></script>
+
+ <script>
+ <!--
+  var $sumImg=$("#img1");
+  var time = new Date().getTime();
+  var src = "stream.jpg?time="+time;
+  setInterval(onChange,30);  //0.03초에 한번씩 changeImage()함수를 호출하는 타이머를 실행시킵니다.
+
+  function onChange(){
+  $('#img1').attr('src', src);
+   }
+  //-->
+ </script>
+
+</head>
+
+<body>
+ <div>
+
+  <div id="panel">
+   <img id="img1" src="stream.jpg" alt="이미지">
+  </div>
+
+ </div>
+</body>
+</html>
+
+​
