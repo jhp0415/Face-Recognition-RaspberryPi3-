@@ -3,19 +3,20 @@
 
 import face_recognition
 import cv2
-import camera
+#import camera
 import os
 import numpy as np
 
 encoding_filename = "face_encoding_file.txt"
 
 class FaceRecog():
-    def __init__(self, cnum):
+    def __init__(self):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
 
-        self.camera = camera.VideoCamera(cnum)
+        #self.camera = camera.VideoCamera()
+
 
         self.known_face_encodings = []
         self.known_face_names = []
@@ -32,7 +33,7 @@ class FaceRecog():
                     break
 
                 self.known_face_names.append(name)
-                #print(name)
+                print(name)
 
                 # 얼굴 인코딩 데이터 읽어오기
                 datas = []
@@ -42,7 +43,7 @@ class FaceRecog():
                 face_encoding = np.array(datas)
                 datas.clear()
                 self.known_face_encodings.append(face_encoding)
-                #print(face_encoding)
+                print(face_encoding)
 
         else:
             # 없으면 파일을 만들고, 파일에 인코딩 데이터 저장하기
@@ -58,14 +59,13 @@ class FaceRecog():
                     pathname = os.path.join(dirname, filename)
                     img = face_recognition.load_image_file(pathname)
                     face_encoding = face_recognition.face_encodings(img)[0]
-                    #print(face_encoding)
+                    # print(face_encoding)
                     self.known_face_encodings.append(face_encoding)
 
-                    #파일에 이름+인코딩 데이터 저장
-                    f.write(name+"\n")
+                    # 파일에 이름+인코딩 데이터 저장
+                    f.write(name + "\n")
                     # 얼굴 인코딩 데이터 저장
-                    np.savetxt(f, face_encoding, delimiter=", ")
-
+                    np.savetxt(f, face_encoding, fmt="%s", delimiter=", ")
 
         # Initialize some variables
         self.face_locations = []
@@ -73,16 +73,12 @@ class FaceRecog():
         self.face_names = []
         self.process_this_frame = True
 
-        # 파일 닫기
-        f.close()
-        return
-
     #def __del__(self):
         #del self.camera
 
-    def get_frame(self):
+    def get_frame(self, frame):
         # Grab a single frame of video
-        frame = self.camera.get_frame()
+        #frame = self.camera.get_frame()
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
@@ -143,23 +139,20 @@ class FaceRecog():
 
 
 if __name__ == '__main__':
-    face_recog = FaceRecog(0)
-    face_recog2 = FaceRecog(1)
-    #print(face_recog.known_face_names)
-    #frame = None
+    face_recog = FaceRecog()
+    print(face_recog.known_face_names)
+    frame = None
     while True:
-        # frame = cv2.imread("ftp/stream.jpg")        # 이미지 읽어오기
-        # if frame is None:   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
-        #     continue
+        frame = cv2.imread("ftp/stream.jpg")        # 이미지 읽어오기
+        if frame is None:   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
+            continue
 
-        frame = face_recog.get_frame()
-        frame2 = face_recog2.get_frame()
+        frame = face_recog.get_frame(frame)
         # show the frame
         cv2.imshow("Face_Recognition", frame)
-        cv2.imshow("Face_Recognition2", frame2)
         key = cv2.waitKey(1) & 0xFF
 
-        # if the `q` key was pressed, break from the oop
+        # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
 
