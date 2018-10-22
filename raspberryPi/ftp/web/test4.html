@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>얼굴인식을 통한 위치추적 시스템</title>
+  <style type="text/text/css">
+
+
+  </style>
+
+  <script>
+    var newImage1 = new Image();
+    //var filepath = "/var/www/html/face/data"
+    newImage1.src = "stream.jpg?" + new Date().getTime();
+    var newImage2 = new Image();
+    newImage2.src = "stream2.jpg?" + new Date().getTime();
+    var newImage3 = new Image();
+    newImage3.src = "stream.jpg?" + new Date().getTime();
+
+    function updateImage()
+    {
+      if(newImage1.complete)
+      {
+        newImage1.src = "stream.jpg?" + new Date().getTime();    //현재 시간기준으로 이미지 새로 업데이트 하기. 캐시를 지워주는 역할
+        document.getElementById("img1").src = newImage1.src;
+      }
+      if(newImage2.complete)
+      {
+        newImage2.src = "stream2.jpg?" + new Date().getTime();    //현재 시간기준으로 이미지 새로 업데이트 하기. 캐시를 지워주는 역할
+        document.getElementById("img2").src = newImage2.src;
+      }
+      if(newImage3.complete)
+      {
+        newImage3.src = "stream.jpg?" + new Date().getTime();    //현재 시간기준으로 이미지 새로 업데이트 하기. 캐시를 지워주는 역할
+        document.getElementById("img3").src = newImage3.src;
+      }
+      setTimeout(updateImage, 500);
+    }
+
+  </script>
+
+
+</head>
+<body onload = "updateImage()">
+  <div id="main">
+    <div id="posImg1" style="float:left;width:30%;">
+      <img id="img1" alt="이미지1" width="400">
+      <p>1번 전송</p><br>
+      <p>IP : 203.255.0.0</p><br>
+      <p>위치 : 개신문화관 1층 ㅇㅇㅇ</p><br>
+    </div>
+
+    <div id="posImg2" style="float:left;width:30%;">
+      <img id="img2" alt="이미지2" width="400">
+      <p>1번 전송</p><br>
+      <p>IP : 203.255.0.1</p><br>
+      <p>위치 : 개신문화관 1층 ㄹㄹㄹ</p><br>
+    </div>
+
+    <div id="posImg3" style="float:left;width:30%;">
+      <img id="img3" alt="이미지3" width="400">
+      <p>1번 전송</p><br>
+      <p>IP : 203.255.0.2</p><br>
+      <p>위치 : 개신문화관 1층 ㅈㅈㅈ</p><br>
+    </div>
+
+  </div>
+</body>
+</html>

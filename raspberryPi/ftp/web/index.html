@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>이미지 자동 변경</title>
+  <style type="text/text/css">
+    /* #posImg1{
+      width:400px;
+      position:absolute;
+      top: 0px;
+      left: 0px;
+    }
+    #posImg2{
+      width:400px;
+      position: absolute;
+      top: 0px;
+      left: 500px;
+    }
+    #posImg3{
+      width:400px;
+      position: absolute;
+      top: 0px;
+      left: 1000px;
+    } */
+
+  </style>
+
+  <script>
+    var newImage1 = new Image();
+    //var filepath = "/var/www/html/face/data"
+    newImage1.src = "stream.jpg?" + new Date().getTime();
+    var newImage2 = new Image();
+    newImage2.src = "stream2.jpg?" + new Date().getTime();
+    //var newImage3 = new Image();
+    //newImage3.src = "../data/stream3.jpg?" + new Date().getTime();
+
+    function updateImage()
+    {
+      if(newImage1.complete)
+      {
+        newImage1.src = "stream.jpg?" + new Date().getTime();    //현재 시간기준으로 이미지 새로 업데이트 하기. 캐시를 지워주는 역할
+        document.getElementById("img1").src = newImage1.src;
+      }
+      if(newImage2.complete)
+      {
+        newImage2.src = "stream2.jpg?" + new Date().getTime();    //현재 시간기준으로 이미지 새로 업데이트 하기. 캐시를 지워주는 역할
+        document.getElementById("img2").src = newImage2.src;
+      }
+      // if(newImage3.complete)
+      // {
+      //   newImage3.src = "../data/stream3.jpg?" + new Date().getTime();    //현재 시간기준으로 이미지 새로 업데이트 하기. 캐시를 지워주는 역할
+      //   document.getElementById("img3").src = newImage3.src;
+      // }
+      setTimeout(updateImage, 500);
+    }
+
+  </script>
+
+
+</head>
+<body onload = "updateImage()">
+  <div id="main">
+    <div id="posImg1">
+      <img id="img1" alt="이미지1" width="400">
+      <p>1번 전송</p>
+    </div>
+
+    <div id="posImg2">
+      <img id="img2" alt="이미지2" width="400">
+      <p>2번 전송</p>
+    </div>
+
+    <div id="posImg3">
+      <img id="img3" alt="이미지3" width="400">
+      <p>3번 전송</p>
+    </div>
+
+  </div>
+</body>
+</html>

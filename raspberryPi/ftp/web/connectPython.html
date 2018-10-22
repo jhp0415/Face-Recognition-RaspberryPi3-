@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>이미지 자동 변경</title>
+
+  <script>
+  var spawn = require('child_process').spawn,
+  py = spawn('python', ['face_recog.py']),
+  data = [],
+  dataString = "";
+
+  py.stdout.on('data', function(data){
+    dataString += data.toString();
+  });
+
+  py.stdout.on('end', function(){
+    console.log("Sum of numbers = ", dataString);
+  });
+
+  py.stdin.write(JSON.stringify(data));
+  py.stdin.end();
+  </script>
+</head>
+
+<body onload = "updateImage()">
+  <div>
+    <img id="img1" alt="이미지">
+  </div>
+</body>
+</html>

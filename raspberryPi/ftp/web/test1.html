@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>방문할 때마다 변하는 이미지</title>
+    <script type="text/javascript">
+        var imgArray = new Array();
+        imgArray[0] = "C:\Users\jh_p0\Desktop\GitHub\Face-Recognition-RaspberryPi3-\raspberryPi\ftp\data\stream.jpg";
+        imgArray[1] = "sakura2.jpg";
+        imgArray[2] = "sakura3.jpg";
+
+        function showImage() {
+            var imgNum = Math.round(Math.random()*2);
+            var objImg = document.getElementById("introImg");
+            objImg.src = imgArray[imgNum];
+            setTimeout("showImage()", 1000);
+        }
+
+    </script>
+</head>
+<body onload="showImage()">
+     <img id ="introImg" border="0">
+</body>
+</html>

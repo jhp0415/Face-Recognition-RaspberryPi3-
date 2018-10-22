@@ -3,20 +3,19 @@
 
 import face_recognition
 import cv2
-#import camera
+import camera
 import os
 import numpy as np
 
 encoding_filename = "face_encoding_file.txt"
 
 class FaceRecog():
-    def __init__(self):
+    def __init__(self, cnum):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
 
-        #self.camera = camera.VideoCamera()
-
+        self.camera = camera.VideoCamera(cnum)
 
         self.known_face_encodings = []
         self.known_face_names = []
@@ -24,10 +23,10 @@ class FaceRecog():
         # 맨처음 실행할때 파일 생성하기, 이미 파일이 존재하면 실행 안하기
         if os.path.isfile(encoding_filename):
             # 있으면 파일 열어서 읽어오기
-            f = open(encoding_filename, "rb")
+            f = open(encoding_filename, "r")
 
             while True:
-                name = f.readline().decode()
+                name = f.readline()
                 if not name:
                     print("txt 파일 끝까지 읽기 완료")
                     break
@@ -38,7 +37,7 @@ class FaceRecog():
                 # 얼굴 인코딩 데이터 읽어오기
                 datas = []
                 for i in range(0, 128):
-                    data = f.readline().decode().split("\n")
+                    data = f.readline().split("\n")
                     datas.append(float(data[0]))
                 face_encoding = np.array(datas)
                 datas.clear()
@@ -47,7 +46,7 @@ class FaceRecog():
 
         else:
             # 없으면 파일을 만들고, 파일에 인코딩 데이터 저장하기
-            f = open(encoding_filename, "wb")
+            f = open(encoding_filename, "w")
 
             # Load sample pictures and learn how to recognize it.
             dirname = 'knowns'
@@ -59,13 +58,14 @@ class FaceRecog():
                     pathname = os.path.join(dirname, filename)
                     img = face_recognition.load_image_file(pathname)
                     face_encoding = face_recognition.face_encodings(img)[0]
-                    # print(face_encoding)
+                    #print(face_encoding)
                     self.known_face_encodings.append(face_encoding)
 
-                    # 파일에 이름+인코딩 데이터 저장
-                    f.write((name + "\n").encode())     #이진데이터 변환
+                    #파일에 이름+인코딩 데이터 저장
+                    f.write(name+"\n")
                     # 얼굴 인코딩 데이터 저장
                     np.savetxt(f, face_encoding, delimiter=", ")
+
 
         # Initialize some variables
         self.face_locations = []
@@ -73,12 +73,16 @@ class FaceRecog():
         self.face_names = []
         self.process_this_frame = True
 
+        # 파일 닫기
+        f.close()
+        return
+
     #def __del__(self):
         #del self.camera
 
-    def get_frame(self, frame):
+    def get_frame(self):
         # Grab a single frame of video
-        #frame = self.camera.get_frame()
+        frame = self.camera.get_frame()
         # Resize frame of video to 1/4 size for faster face recognition processing
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
@@ -127,6 +131,8 @@ class FaceRecog():
         return frame
 
 
+
+
     def get_jpg_bytes(self):
         frame = self.get_frame()
         # We are using Motion JPEG, but OpenCV defaults to capture raw images,
@@ -137,39 +143,37 @@ class FaceRecog():
 
 
 if __name__ == '__main__':
-    face_recog = FaceRecog()
-    face_recog2 = FaceRecog()
+    face_recog = FaceRecog(0)
+    face_recog2 = FaceRecog(1)
     #print(face_recog.known_face_names)
-    frame = None
-    frame2 = None
+    #frame = None
     while True:
-        frame = cv2.imread("ftp/stream.jpg")        # 이미지 읽어오기
-        frame2 = cv2.imread("ftp/stream2.jpg")
-        if (frame is None) or (frame2 is None):   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
-            continue
+        # frame = cv2.imread("ftp/stream.jpg")        # 이미지 읽어오기
+        # if frame is None:   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
+        #     continue
 
-        frame = face_recog.get_frame(frame)
-        frame2 = face_recog2.get_frame(frame2)
+        frame = face_recog.get_frame()
+        frame2 = face_recog2.get_frame()
 
         # 얼굴인식한 이미지 저장하기
         filename = 'stream.jpg'
         filename2 = "stream2.jpg"
-        filepath = "/var/www/html/face/"    # 웹 경로에 저장하기
+        filepath = "./data"
         file = os.path.join(filepath, filename)  # 경로 + 파일 이름 + 확장자 (리눅스 버전)
         file2 = os.path.join(filepath, filename2)  # 경로 + 파일 이름 + 확장자 (리눅스 버전)
         cv2.imwrite(file, frame)  # 이미지 저장
         cv2.imwrite(file2, frame2)  # 이미지 저장
-        print(filepath + "에 파일 저장 완료")
+        print("파일 저장 완료")
+
 
         # # show the frame
         # cv2.imshow("Face_Recognition", frame)
         # cv2.imshow("Face_Recognition2", frame2)
-        #
         # key = cv2.waitKey(1) & 0xFF
-        #
-        # # if the `q` key was pressed, break from the loop
+        # # if the `q` key was pressed, break from the oop
         # if key == ord("q"):
         #     break
+
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
