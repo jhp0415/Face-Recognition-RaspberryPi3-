@@ -143,26 +143,26 @@ if __name__ == '__main__':
     frame = None
     frame2 = None
     while True:
-        frame = cv2.imread("ftp/stream.jpg")        # 이미지 읽어오기
+        frame1 = cv2.imread("ftp/stream1.jpg")        # 이미지 읽어오기
         frame2 = cv2.imread("ftp/stream2.jpg")
-        if (frame is None) or (frame2 is None):   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
+        if (frame1 is None) or (frame2 is None):   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
             continue
 
-        frame = face_recog.get_frame(frame)
+        frame1 = face_recog.get_frame(frame1)
         frame2 = face_recog2.get_frame(frame2)
 
         # 얼굴인식한 이미지 저장하기
-        filename = 'stream.jpg'
+        filename1 = 'stream1.jpg'
         filename2 = "stream2.jpg"
-        filepath = "/var/www/html/face/"    # 웹 경로에 저장하기
-        file = os.path.join(filepath, filename)  # 경로 + 파일 이름 + 확장자 (리눅스 버전)
+        filepath = "/var/www/cgi-bin/data/"    # 웹 경로에 저장하기
+        file1 = os.path.join(filepath, filename1)  # 경로 + 파일 이름 + 확장자 (리눅스 버전)
         file2 = os.path.join(filepath, filename2)  # 경로 + 파일 이름 + 확장자 (리눅스 버전)
-        cv2.imwrite(file, frame)  # 이미지 저장
+        cv2.imwrite(file1, frame1)  # 이미지 저장
         cv2.imwrite(file2, frame2)  # 이미지 저장
         print(filepath + "에 파일 저장 완료")
 
         # # show the frame
-        # cv2.imshow("Face_Recognition", frame)
+        # cv2.imshow("Face_Recognition", frame1)
         # cv2.imshow("Face_Recognition2", frame2)
         #
         # key = cv2.waitKey(1) & 0xFF
