@@ -31,7 +31,7 @@ class FaceRecog():
                 if not name:
                     print("txt 파일 끝까지 읽기 완료")
                     break
-
+                name = name[len('name:') : -1]
                 self.known_face_names.append(name)
                 #print(name)
 
@@ -62,10 +62,13 @@ class FaceRecog():
                     # print(face_encoding)
                     self.known_face_encodings.append(face_encoding)
 
+                    print("%s 저장하기" %name)
                     # 파일에 이름+인코딩 데이터 저장
-                    f.write((name + "\n").encode())     #이진데이터 변환
+                    f.write(('name:' + name + "\n").encode())     #이진데이터 변환
                     # 얼굴 인코딩 데이터 저장
                     np.savetxt(f, face_encoding, delimiter=", ")
+            print("인코딩 완료")
+            f.close()
 
         # Initialize some variables
         self.face_locations = []
@@ -137,10 +140,10 @@ class FaceRecog():
 
 
 if __name__ == '__main__':
-    face_recog = FaceRecog()
+    face_recog1 = FaceRecog()
     face_recog2 = FaceRecog()
     #print(face_recog.known_face_names)
-    frame = None
+    frame1 = None
     frame2 = None
     while True:
         frame1 = cv2.imread("ftp/stream1.jpg")        # 이미지 읽어오기
@@ -148,7 +151,7 @@ if __name__ == '__main__':
         if (frame1 is None) or (frame2 is None):   # 이미지 읽는 타이밍이 안좋았으면 다시 처음부터
             continue
 
-        frame1 = face_recog.get_frame(frame1)
+        frame1 = face_recog1.get_frame(frame1)
         frame2 = face_recog2.get_frame(frame2)
 
         # 얼굴인식한 이미지 저장하기
@@ -161,16 +164,4 @@ if __name__ == '__main__':
         cv2.imwrite(file2, frame2)  # 이미지 저장
         print(filepath + "에 파일 저장 완료")
 
-        # # show the frame
-        # cv2.imshow("Face_Recognition", frame1)
-        # cv2.imshow("Face_Recognition2", frame2)
-        #
-        # key = cv2.waitKey(1) & 0xFF
-        #
-        # # if the `q` key was pressed, break from the loop
-        # if key == ord("q"):
-        #     break
-
-    # do a bit of cleanup
-    cv2.destroyAllWindows()
     print('finish')
