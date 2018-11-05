@@ -14,13 +14,11 @@ if 'id' in form:
 else:
     pageId = '1'
 
-#src = './data/stream1.jpg'
 
-while(True):
-    sys.stdout.write("Content-Type: image/jpg\n")
-    sys.stdout.write("Content-Length: " + str(os.stat(src).st_size) + "\n")
-    sys.stdout.write("\n")
-    sys.stdout.flush()
-    sys.stdout.buffer.write(open(src, "rb").read())
-    time.sleep(500)
+sys.stdout.write("Content-Type: image/jpg\n")
+sys.stdout.write("Content-Length: " + str(os.stat(src).st_size) + "\n")
+sys.stdout.write("\n")
+sys.stdout.flush()
+sys.stdout.buffer.write(open(src, "rb").read())
+
 

@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
     # knowns 폴더의 파일들 목록 가져오기
     # .jpg 확장자인 파일들만 따로 추출
+    print("AWS knowns 디렉토리 파일 읽어오기")
     filepath = './knowns'
     files = os.listdir(filepath)
     for file in files:
@@ -35,7 +36,7 @@ if __name__ == '__main__':
                 name = line[len("name:"):-1]
                 known_face_names.append(name)
                 i += 129
-                print("%s 가 인코딩 파일안에 존재합니다." %name)
+                #print("%s 가 인코딩 파일안에 존재합니다." %name)
 
 
     # 디렉토리에는 있는데 인코딩 파일에는 저장되지 않는 사람 구하기

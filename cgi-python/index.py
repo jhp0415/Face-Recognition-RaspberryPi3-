@@ -15,6 +15,8 @@ print('''<!doctype html>
     newImage1.src = "image.py?id=1";
     var newImage2 = new Image();
     newImage2.src = "image.py?id=2";
+     var newImage3 = new Image();
+    newImage3.src = "image.py?id=3";
 
     function updateImage()
     {
@@ -27,6 +29,11 @@ print('''<!doctype html>
       { 
         newImage2.src = "image.py?id=2&" + new Date().getTime();
         document.getElementById("img2").src = newImage2.src;
+      }
+      if(newImage3.complete)
+      { 
+        newImage3.src = "image.py?id=3&" + new Date().getTime();
+        document.getElementById("img3").src = newImage2.src;
       }
       var dt = new Date();  
       var elem = document.getElementById("msg");  
@@ -59,6 +66,13 @@ print('''<!doctype html>
         <img id="img2" src="" alt="image2" width="400">
         <p>IP : 2222222</p><br>
         <p>position: home</p><br>
+    </div>
+    
+    <div id="posImg3" style="float:left;width:30%;">
+        <p>3</p><br>
+        <img id="img3" src="" alt="image3" width="400">
+        <p>IP : 33333333</p><br>
+        <p>position: Lab</p><br>
     </div>
 
   <textarea id="msg" ></textarea>
