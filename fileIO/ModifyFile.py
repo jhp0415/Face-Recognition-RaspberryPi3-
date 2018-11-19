@@ -54,7 +54,13 @@ if __name__ == '__main__':
     for name in noData:
         known_face_names.append(name)
         pathname = os.path.join(dirname, name + '.jpg')
+        print(pathname)
         img = face_recognition.load_image_file(pathname)
+        if img is None:
+            print("%s 이미지가 없습니다." %pathname)
+            continue
+        print(img)
+        print("%s 인코딩하기" % name)
         face_encoding = face_recognition.face_encodings(img)[0]
         # print(face_encoding)
         known_face_encodings.append(face_encoding)
@@ -64,6 +70,7 @@ if __name__ == '__main__':
         # 얼굴 인코딩 데이터 저장
         np.savetxt(f, face_encoding, delimiter=", ")
         print('%s 저장 완료' %name)
+
 
     f.close()
 

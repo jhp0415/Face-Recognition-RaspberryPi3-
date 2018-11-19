@@ -33,7 +33,7 @@ print('''<!doctype html>
       if(newImage3.complete)
       { 
         newImage3.src = "image.py?id=3&" + new Date().getTime();
-        document.getElementById("img3").src = newImage2.src;
+        document.getElementById("img3").src = newImage3.src;
       }
       var dt = new Date();  
       var elem = document.getElementById("msg");  
@@ -57,22 +57,22 @@ print('''<!doctype html>
         <p>1</p><br>
         <img id="img1" src="" alt="image1" width="400">
         <p id="text"></p>
-        <p>IP : 111111</p><br>
-        <p>position: school</p><br>
+        <p>IP : 203.255.73.120</p><br>
+        <p>position: CBNU GaeSin 2floor 57-1</p><br>
     </div>
 
     <div id="posImg2" style="float:left;width:30%;">
         <p>2</p><br>
         <img id="img2" src="" alt="image2" width="400">
-        <p>IP : 2222222</p><br>
-        <p>position: home</p><br>
+        <p>IP : 203.255.73.116</p><br>
+        <p>position: CBNU GaeSin 2floor 57-2</p><br>
     </div>
-    
+
     <div id="posImg3" style="float:left;width:30%;">
         <p>3</p><br>
         <img id="img3" src="" alt="image3" width="400">
-        <p>IP : 33333333</p><br>
-        <p>position: Lab</p><br>
+        <p>IP : 203.255.73.110</p><br>
+        <p>position: CBNU GaeSin 2floor 57-3</p><br>
     </div>
 
   <textarea id="msg" ></textarea>
